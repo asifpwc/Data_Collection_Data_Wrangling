@@ -1,0 +1,11 @@
+library(rvest)
+library(dplyr)
+link <- "https://www.imdb.com/search/title/?groups=top_100&sort=alpha,asc"
+page <- read_html(link)
+name <- page %>% html_nodes(".lister-item-header a") %>% html_text()
+year <- page %>% html_nodes(".text-muted.unbold") %>% html_text()
+rating <- page %>% html_nodes(".ratings-imdb-rating strong") %>% html_text()
+synopsis <- page %>% html_nodes(".ratings-bar+ .text-muted") %>% html_text()
+movies <- data.frame(name,year,rating,synopsis,stringsAsFactors = FALSE)
+write.csv(movies,"movies.csv")
+write.xlsx(movies,"m.xlsx",sheetName = "test")
